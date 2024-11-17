@@ -1,0 +1,20 @@
+name: pre-commit
+
+on:
+  push:
+    branches: [main]
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Pre-commit install and run
+        run: |
+          pip install pre-commit
+          pre-commit run --files $(git diff HEAD^...HEAD --name-only -- ':*.py')
